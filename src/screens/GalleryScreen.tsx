@@ -9,8 +9,6 @@ import {
 } from 'react-native';
 import axios from 'axios/index';
 
-const icons = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 function GalleryScreen(): React.JSX.Element {
   const [visibleIcons, setVisibleIcons] = useState(12);
   const [news, setNews] = useState([]);
@@ -22,7 +20,7 @@ function GalleryScreen(): React.JSX.Element {
           'https://api.github.com/repos/ipzk211lvv/news/contents/image',
         );
         setNews(response.data);
-        response.data.forEach(e => console.log(e))
+        response.data.forEach(e => console.log(e));
       } catch (error) {
         console.error('Error fetching news:', error);
       }
@@ -51,7 +49,7 @@ function GalleryScreen(): React.JSX.Element {
           <Image style={styles.image} source={{uri: e.download_url}} />
         </View>
       ))}
-      {visibleIcons < icons.length && (
+      {visibleIcons < news.length && (
         <ActivityIndicator style={styles.loadingIndicator} />
       )}
     </ScrollView>
