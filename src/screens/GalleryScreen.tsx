@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import { View, ScrollView, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
-import AllIcons from 'react-native-vector-icons/glyphmaps/FontAwesome.json';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
-const icons = Object.keys(AllIcons);
+const icons = [0,1,2,3,4,5,6,7,8,9];
 
 function GalleryScreen(): React.JSX.Element {
   const [visibleIcons, setVisibleIcons] = useState(12);
@@ -24,9 +22,7 @@ function GalleryScreen(): React.JSX.Element {
       onScroll={event => handleScroll(event)}
       scrollEventThrottle={16}>
       {icons.slice(0, visibleIcons).map(name => (
-        <View key={name} style={styles.square}>
-          <Icon name={name} size={width / 5} color="gray" />
-        </View>
+        <View key={name} style={styles.square} />
       ))}
       {visibleIcons < icons.length && (
         <ActivityIndicator style={styles.loadingIndicator} />
