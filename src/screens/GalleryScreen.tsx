@@ -11,7 +11,7 @@ import axios from 'axios/index';
 
 function GalleryScreen(): React.JSX.Element {
   const [visibleIcons, setVisibleIcons] = useState(12);
-  const [news, setNews] = useState([]);
+  const [photographs, setPhotographs] = useState([]);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -19,7 +19,7 @@ function GalleryScreen(): React.JSX.Element {
         const response = await axios.get(
           'https://api.github.com/repos/ipzk211lvv/news/contents/image',
         );
-        setNews(response.data);
+        setPhotographs(response.data);
         response.data.forEach(e => console.log(e));
       } catch (error) {
         console.error('Error fetching news:', error);
@@ -44,12 +44,12 @@ function GalleryScreen(): React.JSX.Element {
       contentContainerStyle={styles.container}
       onScroll={event => handleScroll(event)}
       scrollEventThrottle={16}>
-      {news.map(e => (
+      {photographs.map(e => (
         <View key={e.path} style={styles.square}>
           <Image style={styles.image} source={{uri: e.download_url}} />
         </View>
       ))}
-      {visibleIcons < news.length && (
+      {visibleIcons < photographs.length && (
         <ActivityIndicator style={styles.loadingIndicator} />
       )}
     </ScrollView>
