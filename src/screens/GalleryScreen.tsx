@@ -1,12 +1,35 @@
-import React, {useState} from 'react';
-import { View, ScrollView, StyleSheet, Dimensions, ActivityIndicator } from "react-native";
-import AllIcons from 'react-native-vector-icons/glyphmaps/FontAwesome.json';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, {useEffect, useState} from 'react';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import axios from 'axios/index';
 
-const icons = Object.keys(AllIcons);
+const icons = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 function GalleryScreen(): React.JSX.Element {
   const [visibleIcons, setVisibleIcons] = useState(12);
+  const [news, setNews] = useState([]);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await axios.get(
+          'https://api.github.com/repos/ipzk211lvv/news/contents/image',
+        );
+        setNews(response.data);
+        response.data.forEach(e => console.log(e))
+      } catch (error) {
+        console.error('Error fetching news:', error);
+      }
+    };
+
+    fetchNews();
+  }, []);
 
   const handleScroll = event => {
     const {layoutMeasurement, contentOffset, contentSize} = event.nativeEvent;
@@ -23,9 +46,9 @@ function GalleryScreen(): React.JSX.Element {
       contentContainerStyle={styles.container}
       onScroll={event => handleScroll(event)}
       scrollEventThrottle={16}>
-      {icons.slice(0, visibleIcons).map(name => (
-        <View key={name} style={styles.square}>
-          <Icon name={name} size={width / 5} color="gray" />
+      {news.map(e => (
+        <View key={e.path} style={styles.square}>
+          <Image style={styles.image} source={{uri: e.download_url}} />
         </View>
       ))}
       {visibleIcons < icons.length && (
@@ -53,6 +76,10 @@ const styles = StyleSheet.create({
     elevation: 7,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
   loadingIndicator: {
     position: 'absolute',
