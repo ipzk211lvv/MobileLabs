@@ -20,7 +20,6 @@ function GalleryScreen(): React.JSX.Element {
           'https://api.github.com/repos/ipzk211lvv/news/contents/image',
         );
         setPhotographs(response.data);
-        response.data.forEach(e => console.log(e));
       } catch (error) {
         console.error('Error fetching news:', error);
       }
@@ -44,7 +43,7 @@ function GalleryScreen(): React.JSX.Element {
       contentContainerStyle={styles.container}
       onScroll={event => handleScroll(event)}
       scrollEventThrottle={16}>
-      {photographs.map(e => (
+      {photographs.slice(0, visibleIcons).map(e => (
         <View key={e.path} style={styles.square}>
           <Image style={styles.image} source={{uri: e.download_url}} />
         </View>
